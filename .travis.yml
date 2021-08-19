@@ -1,0 +1,50 @@
+language: python
+
+sudo: false
+cache:
+  apt: true
+  directories:
+    - $HOME/.cache/pip
+
+addons:
+  postgresql: "9.6"
+
+addons:
+  apt:
+    packages:
+      - expect-dev
+      - python-lxml
+      - python-simplejson
+      - python-yaml
+      - swig  # Required for m2crypto
+      - python-m2crypto
+      - xmlstarlet
+      - xsltproc
+      - openssl
+      - poppler-utils
+      - antiword
+
+python:
+  - "3.5"
+
+env:
+  global:
+  - LINT_CHECK="0" TESTS="0"
+  - VERSION="11.0" ODOO_REPO="vauxoo/odoo"
+  - COUNTRY="MX"
+  - PSQL_VERSION="9.6"
+  - TRAVIS_REPO_SLUG="Vauxoo/"
+  matrix:
+  - LINT_CHECK="1"
+  - INCLUDE="requiez" TESTS="1"
+
+install:
+  - git clone --single-branch --depth=1 https://github.com/vauxoo/maintainer-quality-tools.git -b master ${HOME}/maintainer-quality-tools
+  - export PATH=${HOME}/maintainer-quality-tools/travis:${PATH}
+  - travis_install_nightly
+
+script:
+  - travis_run_tests
+
+after_success:
+  - travis_after_tests_success

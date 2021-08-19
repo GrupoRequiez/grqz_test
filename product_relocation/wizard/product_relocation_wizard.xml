@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record id="product_relocation_wizard_view" model="ir.ui.view">
+      <field name="name">product.relocation.wizard.view</field>
+      <field name="model">product.relocation</field>
+      <field name="arch" type="xml">
+        <form string="Product relocation">
+          <sheet>
+            <group>
+              <!-- <group> -->
+              <field name="responsible" attrs="{'readonly':[('getted','=',True)]}"/>
+              <field name="source" attrs="{'readonly':[('getted','=',True)]}"/>
+              <field name="location_id" attrs="{'readonly':[('getted','=',True)]}"/>
+              <!-- </group> -->
+            </group>
+            <group>
+              <group>
+                <field invisible="1" name="getted"/>
+                <field name="data_file" attrs="{'invisible':[('getted','=',True)]}"/>
+                <field name="name" invisible="1"/>
+                <!-- <field name="csv_file" filename="name" attrs="{'invisible':[('getted','=',False)]}"/> -->
+                <button name="read_file" string="Read file" attrs="{'invisible':[('data_file','=',False)]}" type="object" default_focus="1" class="oe_highlight"/>
+              </group>
+            </group>
+            <notebook name="Relocations">
+              <page name="lines" string='Relocations'>
+                <list>
+                  <field name="product_relocation_line_ids" attrs="{'readonly':[('getted','=',True)]}">
+                    <tree editable="bottom" create="1" edit="1" import="0" js_class="singleton_list" sample="1">
+                      <field name="product"/>
+                      <field name="quantity"/>
+                      <field name="location_id"/>
+                      <field name="location_dest"/>
+                      <field name="lot"/>
+                      <field name="status" attrs="{'readonly': True}"/>
+                    </tree>
+                  </field>
+                </list>
+              </page>
+            </notebook>
+              <footer>
+                <button name="confirm" string="Confirm" attrs="{'invisible':[('getted','=',True)]}" type="object" default_focus="1" class="oe_highlight"/>
+                <button string="Cancel" class="oe_link" special="cancel"/>
+              </footer>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <!-- <record id="product_relocation_line_form_view" model="ir.ui.view">
+      <field name="name">product.relocation.line.form.view</field>
+      <field name="model">product.relocation.line</field>
+      <field name="arch" type="xml">
+        <form string="Product relocation line">
+          <group>
+            <field name="product"/>
+            <field name="quantity"/>
+            <field name="location_id"/>
+            <field name="location_dest"/>
+            <field name="lot"/>
+            <field name="status"/>
+          </group>
+        </form>
+      </field>
+    </record> -->
+
+
+    <record id="action_product_relocation_wizard_view" model="ir.actions.act_window">
+      <field name="name">Product relocation</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">product.relocation</field>
+      <field name="view_mode">form</field>
+      <field name="target">new</field>
+      <field name="view_id" ref="product_relocation_wizard_view"/>
+    </record>
+
+    <menuitem id="menu_product_relocation" parent="stock.menu_stock_warehouse_mgmt" groups="product_relocation.product_relocation_group" action="action_product_relocation_wizard_view" sequence="51"/>
+  </data>
+</odoo>
