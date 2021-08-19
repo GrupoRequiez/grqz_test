@@ -11,6 +11,7 @@ _logger = logging.getLogger(__name__)
 
 class UploadForecast(models.TransientModel):
     _name = "upload.forecast"
+    _description = 'upload.forecast'
 
     name = fields.Char('File Name')
     data_file = fields.Binary('File')
@@ -19,7 +20,6 @@ class UploadForecast(models.TransientModel):
          ('get', 'get')],
         default='choose')
 
-    @api.multi
     def confirm(self):
         # pylint: disable=C0103
         ProductProduct = self.env['product.product']

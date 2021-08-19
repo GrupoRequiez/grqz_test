@@ -3,6 +3,7 @@ from odoo import fields, models
 
 class SaleOrderObservation(models.AbstractModel):
     _name = 'sale.order.observation'
+    _description = 'sale.order.observation'
 
     observation = fields.Text()
     sale_line_observation = fields.Text(

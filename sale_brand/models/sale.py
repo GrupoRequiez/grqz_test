@@ -30,17 +30,17 @@ class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
     brand = fields.Char('Brand',
-                            compute='_compute_brand_id',
-                            search='_search_brand',
-                            readonly=True)
+                        compute='_compute_brand_id',
+                        search='_search_brand',
+                        readonly=True)
 
-    @api.one
+    # @api.one
     def _compute_brand_id(self):
         if self.order_line:
             if self.order_line[0].product_id.product_brand_id:
                 self.brand = self.order_line[0].product_id.product_brand_id.name
 
-    @api.multi
+    # @api.multi
     def _search_brand(self, operator, value):
         SaleOrder = self.env['sale.order']
         orders = SaleOrder.search([])
@@ -56,3 +56,8 @@ class SaleOrder(models.Model):
                         if brand != value:
                             list_ids.append(order.id)
         return [('id', 'in', list_ids)]
+
+    # def _create_invoices(self, grouped=False, final=False, date=None, sequence=False):
+    #     print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> aquí")
+    #     res = super(SaleOrder, self)._create_invoices()
+    #     return res

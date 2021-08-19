@@ -3,7 +3,7 @@
     <record id="mrp_production_sale_observation_form_view" model="ir.ui.view">
         <field name="name">mrp.production.sale.observation.form.view</field>
         <field name="model">mrp.production</field>
-        <field name="inherit_id" ref="mrp_sale_info.mrp_production_form_view" />
+        <field name="inherit_id" ref="mrp_sale_info.mrp_production_form_view_inherit"/>
         <field name="arch" type="xml">
             <field name="sale_id" position="after">
                 <field name="sale_type_id"/>

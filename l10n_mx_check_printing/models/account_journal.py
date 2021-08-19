@@ -5,7 +5,7 @@ class AccountJournal(models.Model):
     _inherit = "account.journal"
 
     mx_check_layout = fields.Selection(
-        string="Check Layout", required=True,
+        string="Check Layout",
         help="Select the format corresponding to the bank you will be "
         "printing your checks on. In order to disable the printing feature, "
         "select 'None'.",

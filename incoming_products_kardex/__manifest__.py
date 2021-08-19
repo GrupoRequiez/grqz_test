@@ -12,7 +12,7 @@
     'author': "gflores",
     'website': "https://www.gruporequiez.com",
     'category': 'Inventory',
-    'version': '12.0.0.0.1',
+    'version': '0.0.1',
     'license': "LGPL-3",
     'depends': [
         'product',
@@ -20,6 +20,8 @@
         'purchase'
     ],
     'data': [
+        # security
+        "security/ir.model.access.csv",
         # data
         'data/report_data.xml',
         # views

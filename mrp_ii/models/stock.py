@@ -30,14 +30,14 @@ class StockMove(models.Model):
     _inherit = 'stock.move'
 
     compromise_qty_move = fields.Float('Compromise',
-                        compute='_compute_compromise_qty_move', readonly=True)
+                                       compute='_compute_compromise_qty_move', readonly=True)
 
-    @api.one
+    # @api.one
     def _compute_compromise_qty_move(self):
         ProductCompromise = self.env['product.compromise']
         product_compromises = ProductCompromise.search([
-                            ('stock_move_in_id.id', '=', self.id),
-                            ('state', '=', 'assigned')])
+            ('stock_move_in_id.id', '=', self.id),
+            ('state', '=', 'assigned')])
         self.compromise_qty_move = sum([product_compromise.qty_compromise
-                                for product_compromise in
-                                product_compromises])
+                                        for product_compromise in
+                                        product_compromises])

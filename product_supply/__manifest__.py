@@ -37,6 +37,9 @@
         'product_brand',
     ],
     'data': [
+        # security
+        "security/ir.model.access.csv",
+        # views
         'report/product_supply_report.xml',
         'report/supply_report_templates.xml',
         'view/stock_view.xml',

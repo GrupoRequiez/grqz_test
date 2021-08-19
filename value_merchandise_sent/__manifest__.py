@@ -19,7 +19,7 @@
 
 {
     'name': 'value of merchandise sent',
-    'version': '12.0.0.0.1',
+    'version': '0.0.1',
     'summary': 'value of merchandise sent',
     'author': 'gflores',
     'maintainer': 'gflores',
@@ -29,7 +29,10 @@
     'category': 'Inventory',
     'demo': [],
     'data': [
+        # security
+        "security/ir.model.access.csv",
         'security/value_merchandise_security.xml',
+        # views
         'wizard/value_merchandise_view.xml',
         'wizard/upload_carrier_tracking_ref_view.xml',
     ],

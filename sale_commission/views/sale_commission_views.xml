@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+  <data>
     <record id="sale_commission_form" model="ir.ui.view">
         <field name="name">sale.commission.form</field>
         <field name="model">sale.commission</field>
@@ -41,13 +42,16 @@
             </form>
         </field>
     </record>
+
     <record id="sale_commission_action" model="ir.actions.act_window">
-        <field name="name">Commission Calculation</field>
-        <field name="res_model">sale.commission</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
+      <field name="name">Commission Calculation</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">sale.commission</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="sale_commission.sale_commission_form"/>
     </record>
-    <menuitem id="menu_sale_commission" name="Commission Calculation" parent="sale.menu_sale_report" action="sale_commission_action"/>
+
+    <menuitem id="menu_sale_commission" parent="sale.menu_sale_report" action="sale_commission_action" sequence="50"/>
 
     <record id="sale_commission_detail_view" model="ir.ui.view">
         <field name="name">sale.commission.detail.view</field>
@@ -68,4 +72,5 @@
             </form>
         </field>
     </record>
+  </data>
 </odoo>

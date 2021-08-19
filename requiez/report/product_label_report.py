@@ -8,6 +8,7 @@ _logger = logging.getLogger(__name__)
 
 class ProductLabelPicking(models.AbstractModel):
     _name = 'report.requiez.print_prod_label_picking'
+    _description = 'report.requiez.print_prod_label_picking'
 
     def decimal_format(self, num):
         return int(num)
@@ -22,8 +23,7 @@ class ProductLabelPicking(models.AbstractModel):
             [('move_dest_ids', 'in', [move_id])], limit=1)
         return move.production_id.sale_line_observation or ''
 
-    @api.multi
-    def get_report_values(self, docids, data=None):
+    def _get_report_values(self, docids, data=None):
         report = self.env['ir.actions.report']._get_report_from_name(
             'requiez.print_prod_label_picking')
         docs = self.env['stock.picking'].browse(docids)
@@ -41,6 +41,7 @@ class ProductLabelPicking(models.AbstractModel):
 
 class ProductLabelMrp(models.AbstractModel):
     _name = 'report.requiez.print_prod_label_mrp'
+    _description = 'report.requiez.print_prod_label_mrp'
 
     def decimal_format(self, num):
         return int(num)
@@ -92,7 +93,6 @@ class ProductLabelMrp(models.AbstractModel):
                          'mrp_name': result[7]})
         return data
 
-    @api.multi
     def _get_report_values(self, docids, data=None):
         report = self.env['ir.actions.report']._get_report_from_name('requiez.print_prod_label_mrp')
         docs = self.env[report.model].browse(docids)

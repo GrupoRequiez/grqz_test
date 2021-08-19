@@ -27,11 +27,11 @@
     </record>
 
     <record id="action_upload_forecast" model="ir.actions.act_window">
-        <field name="name">Upload Forecast</field>
-        <field name="res_model">upload.forecast</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
+      <field name="name">Upload Forecast</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">upload.forecast</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="upload_forecast_view"/>
     </record>
 
     <menuitem

@@ -15,7 +15,7 @@ class IncomingProductsKardex(models.TransientModel):
     picking_id = fields.Many2one(
         'stock.picking', 'Stock Picking', required=True)  # domain=[('origin', '=ilike', '%OCR%')],
 
-    @api.multi
+    # # @api.multi
     def get_stock_picking_data(self):
         stock_move_ids = self.env['stock.move'].search(
             [('picking_id', '=', self.picking_id.id)])
@@ -38,7 +38,7 @@ class IncomingProductsKardex(models.TransientModel):
             'target': 'new',
         }
 
-    @api.multi
+    # # @api.multi
     def get_kardex(self):
         if self.stock_kardex_line_ids:
             msj = ''
@@ -85,8 +85,7 @@ class IncomingProductsKardex(models.TransientModel):
                 'target': 'new',
             }
 
-    @api.multi
-    def print_kardex(self, docids, data=None):
+    def print_kardex(self, data=None):
         if self.getted:
             report = self.env['ir.actions.report']._get_report_from_name(
                 'incoming_products_kardex.incoming_products_kardex_report_template')

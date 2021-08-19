@@ -6,13 +6,14 @@
         <field name="user_type_id" ref="account.data_account_type_current_assets"/>
         <field name="reconcile" eval="True"/>
     </record>
+
     <record id="mx_coa" model="account.chart.template">
         <field name="name">Plan de Cuentas para Requiez</field>
         <field name="bank_account_code_prefix">102.01.0</field>
         <field name="cash_account_code_prefix">101.01.0</field>
         <field name="code_digits">3</field>
         <field name="currency_id" ref="base.MXN"/>
-        <field name="transfer_account_id" ref="cuenta102_01"/>
+        <!-- <field name="transfer_account_id" ref="cuenta102_01"/> -->
         <field name="use_anglo_saxon" eval="True"/>
         <field name="transfer_account_code_prefix">TODO</field>
     </record>

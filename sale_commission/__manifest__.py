@@ -8,7 +8,7 @@
     'author': "Vauxoo",
     'website': "https://www.vauxoo.com",
     'category': 'Sale',
-    'version': '12.0.1.0.2',
+    'version': '1.0.2',
     'license': "LGPL-3",
     'depends': [
         'account',

@@ -6,21 +6,25 @@
     <field name="model">res.partner</field>
     <field name="inherit_id" ref="base.view_partner_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//button[@name='toggle_active']" position="replace">
-        <button name="toggle_active" type="object" groups="requiez.group_archive" class="oe_stat_button" icon="fa-archive">
-          <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
-        </button>
-      </xpath>
+      <xpath expr="//div[@class='oe_title']/field[@name='active']" position="replace"/>
+      <div class="oe_button_box" name="button_box">
+          <button name="toggle_active" string="Active" type="object" class="oe_stat_button" icon="fa-archive" groups="requiez.group_archive">
+              <field name="active" widget="boolean_button" options='{"terminology": "archive"}'/>
+          </button>
+      </div>
+
       <xpath expr="//field[@name='ref']" position="replace"/>
+
       <xpath expr="//field[@name='website']" position="after">
         <field name="ref" string="Business Name"/>
       </xpath>
       <xpath expr="//field[@name='vat']" position="attributes">
-        <attribute name="attrs">{'required': [('customer','=',True)]}</attribute>
+        <attribute name="attrs">{'required':True}</attribute>
       </xpath>
 
     </field>
   </record>
+
   <record model="ir.ui.view" id="view_partner_credit_form">
     <field name="name">res.partner.credit.form</field>
     <field name="model">res.partner</field>

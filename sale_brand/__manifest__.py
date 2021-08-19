@@ -33,7 +33,7 @@
     'depends': ['sale', 'product_brand', 'account'],
     'data': [
         'view/sale_view.xml',
-        'view/account_invoice_view.xml',
+        'view/account_move_view.xml',
     ],
     'demo': [
     ],

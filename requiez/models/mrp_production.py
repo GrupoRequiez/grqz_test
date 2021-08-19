@@ -1,7 +1,7 @@
 # Copyright 2016 Antiun Ingenieria S.L. - Javier Iniesta
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models
 
 
 class MrpProduction(models.Model):

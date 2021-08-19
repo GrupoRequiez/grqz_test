@@ -5,9 +5,9 @@
     <field name="model">sale.order</field>
     <field name="inherit_id" ref="sale.view_order_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//field[@name='partner_id']" position="attributes">
-        <attribute name="options">{&quot;always_reload&quot;: True, 'no_open':True, 'no_create':True}</attribute>
-        <attribute name="domain">"[('customer','=',True),('is_company','=',True)]"</attribute>
+      <xpath expr="//group[@name='sale_header']/group/field[@name='partner_id']" position="attributes">
+        <attribute name="options">{'no_open':True, 'no_create':True}</attribute>
+        <attribute name="domain">[('customer_rank','>',0),('is_company','=',True)]</attribute>
       </xpath>
       <xpath expr="//field[@name='order_line']/form/group/group/field[@name='product_id']" position="attributes">
         <attribute name="options">{'no_open':True, 'no_create':True}</attribute>
@@ -28,6 +28,7 @@
       <xpath expr="//button[@name='action_confirm'][1]" position="attributes">
         <attribute name="groups">requiez.group_confirm_order</attribute>
       </xpath>
+
     </field>
   </record>
 
@@ -36,11 +37,12 @@
   <record id="sale_order_date_promised_form" model="ir.ui.view">
     <field name="name">sale.order.date.promised.form</field>
     <field name="model">sale.order</field>
-    <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+    <field name="inherit_id" ref="sale.view_order_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//field[@name='commitment_date']" position="after">
-        <field name="date_promised" attrs="{'required': True}"/>
+      <xpath expr="//group[@name='sale_shipping']" position="inside">
+        <field name="date_promised"/>
       </xpath>
     </field>
   </record>
+
 </odoo>

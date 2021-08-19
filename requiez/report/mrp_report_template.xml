@@ -53,7 +53,7 @@
                   <strong><span t-field="o.order_classification"/></strong>
                 </td>
                 <td class="text-center">
-                  <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.name, 50, 50)"/>
+                  <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.name, 40, 40)"/>
                 </td>
               </tr>
             </t>

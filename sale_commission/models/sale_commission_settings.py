@@ -6,6 +6,7 @@ from odoo import fields, models
 class SaleCommissionSetting(models.Model):
     _name = "sale.commission.setting"
     _rec_name = "day"
+    _description = 'sale.commission.setting'
 
     day = fields.Integer('Days', required=True, help="Commission days")
     commission = fields.Float('Commission (%)', digits=(2, 4), required=True,

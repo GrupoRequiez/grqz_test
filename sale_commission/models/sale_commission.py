@@ -9,8 +9,9 @@ _logger = logging.getLogger(__name__)
 
 class SaleCommission(models.TransientModel):
     _name = "sale.commission"
+    _description = 'sale.commission'
 
-    @api.multi
+    # @api.multi
     def calculate(self):
         sale_commission_det_obj = self.env['sale.commission.detail']
         sale_commission_brand_obj = self.env['sale.commission.brand']
@@ -31,32 +32,34 @@ class SaleCommission(models.TransientModel):
         # and the user_id of the invoice selected in the wizard.
         association_ids = association_obj.search([
             ('date', '>=', date_start), ('date', '<=', date_stop),
-            ('invoice_id.user_id.id', '=', user_id),
-            ('invoice_id.type', '=', 'out_invoice'),
-            ('invoice_id.state', 'in', ['open', 'paid']),
+            ('move_id.invoice_user_id.id', '=', user_id),
+            ('aml_invoice_type', '=', 'out_invoice'),
+            # ('move_id.move_type', '=', 'out_invoice'),
+            ('move_id.state', '=', 'posted'),
             ('aml_state', '=', 'posted'),
             # Filter out Credit Notes
-            '|', ('aml_invoice_type', '=', False),
-            ('aml_invoice_type', '!=', 'out_refund')],
-            order='invoice_id'
-        ).filtered(lambda a: a.payment_amount != 0.0)
+            # ('aml_invoice_type', '!=', 'out_refund')
+        ],
+            order='move_id'
+        )  # .filtered(lambda a: a.payment_amount != 0.0)
 
         for assoc in association_ids:
-            invoice = assoc.invoice_id
+            invoice = assoc.move_id
+            brand_id = invoice.invoice_line_ids[0].product_id.product_brand_id
 
             # We look for the brand commission for this seller.
             commission_brand = 0
-            if invoice.brand:
+            if brand_id:
                 sale_commission_brand = sale_commission_brand_obj.search([
                     ('user_id', '=', invoice.user_id.id),
-                    ('brand_id', '=', invoice.brand)], limit=1)
+                    ('brand_id', '=', brand_id.id)], limit=1)
                 commission_brand = sale_commission_brand.commission / 100
 
             # We take the reconciliation date of the payment and
             # the due date of the invoice for the calculation of commission
             # and penalization (if exists a penalization).
             payment_date = assoc.move_line_id.date
-            date_due = invoice.date_due
+            date_due = invoice.invoice_date_due
 
             def fnc(date):
                 return datetime.strptime(date, '%Y-%m-%d')
@@ -85,8 +88,7 @@ class SaleCommission(models.TransientModel):
                 'commission_brand': commission_brand,
                 'before_penalization': amount_before_penalization,
                 'commission': commission,
-                'brand_id': sale_commission_brand and
-                sale_commission_brand.brand_id.id,
+                'brand_id': brand_id.id,
                 'account_payment_date': payment_date})
 
         return {
@@ -99,11 +101,11 @@ class SaleCommission(models.TransientModel):
             'target': 'new',
         }
 
-    user_id = fields.Many2one('res.users', 'Salesman')
+    user_id = fields.Many2one('res.users', 'Salesman', default=2)
     date_start = fields.Datetime('Start Date', required=True,
-                                 default=lambda self: fields.datetime.now())
+                                 default=lambda self: fields.datetime.today())  # default=lambda self: fields.datetime.today()
     date_end = fields.Datetime('End Date', required=True,
-                               default=lambda self: fields.datetime.now())
+                               default=lambda self: fields.datetime.today())
     sale_commission_detail_ids = fields.One2many('sale.commission.detail',
                                                  'sale_commission_id',
                                                  'Details')
@@ -113,13 +115,13 @@ class SaleCommission(models.TransientModel):
     commission = fields.Float(compute='_compute_commission',
                               readonly=True)
 
-    @api.multi
+    # @api.multi
     def print_commission(self):
         report = self.env['ir.actions.report']._get_report_from_name(
             'sale_commission.sale_commission_report_template')
         return report.report_action(self)
 
-    @api.multi
+    # @api.multi
     def _compute_commission(self):
         self.commission_tax = sum([sale_commission_detail.commission
                                    for sale_commission_detail in
@@ -130,18 +132,19 @@ class SaleCommission(models.TransientModel):
 
 class SaleCommissionDetail(models.TransientModel):
     _name = "sale.commission.detail"
+    _description = "Details"
 
-    @api.multi
+    # @api.multi
     def compute_currency_id(self):
         for record in self:
             record.currency_id = self.env.user.company_id.currency_id
 
     sale_commission_id = fields.Many2one('sale.commission', 'Commission')
-    account_invoice_id = fields.Many2one('account.invoice', 'Invoice',
+    account_invoice_id = fields.Many2one('account.move', 'Invoice',
                                          readonly=True)
-    account_invoice_number = fields.Char(related='account_invoice_id.number',
-                                         string='Number', readonly=True)
-    account_invoice_date = fields.Date(related='account_invoice_id.date_due',
+    account_invoice_number = fields.Char(related='account_invoice_id.name',
+                                         string='Name', readonly=True)
+    account_invoice_date = fields.Date(related='account_invoice_id.invoice_date_due',
                                        string='Invoice date', readonly=True)
     partner_id = fields.Many2one(related='account_invoice_id.partner_id',
                                  string='Customer', readonly=True)

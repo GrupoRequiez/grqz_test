@@ -7,6 +7,7 @@ from . import res_partner
 from . import stock_picking
 from . import procurement
 from . import stock
-from . import stock_location
-from . import mrp_mps_report
+from . import mrp_mps
 from . import mrp_production
+from . import product
+# from . import stock_rule
