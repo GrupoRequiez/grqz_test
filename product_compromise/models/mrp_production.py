@@ -9,7 +9,7 @@ _logger = logging.getLogger(__name__)
 class MrpProduction(models.Model):
     _inherit = 'mrp.production'
 
-    @api.multi
+    # @api.multi
     def action_assign(self):
         for production in self:
             move_to_assign = production.move_raw_ids.filtered(
@@ -21,4 +21,12 @@ class MrpProduction(models.Model):
                     lambda s: s.compromise_qty <= 0)._action_assign()
                 return True
             move_to_assign._action_assign()
+        return True
+
+    def _action_cancel(self):
+        if super(MrpProduction, self)._action_cancel():
+            product_compromise = self.env['product.compromise']
+            product_compromises = product_compromise.search([(
+                'stock_move_out_id.state', '=', 'cancel')])
+            product_compromises.unlink()
         return True

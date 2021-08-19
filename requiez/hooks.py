@@ -258,7 +258,7 @@ def module_delete(cr, module_name):
                                (rec[0],))
 
             # ir_act_window:
-            if table == 'ir_act_window' and table_exists(cr, 'board_board_line'): # noqa
+            if table == 'ir_act_window' and table_exists(cr, 'board_board_line'):  # noqa
                 cr.execute('SELECT count(1) FROM board_board_line '
                            'WHERE action_id = %s', (rec[0],))
                 count = cr.fetchone()[0]
@@ -537,7 +537,7 @@ def set_product_uom(cr):
 
 
 def remove_country_format(cr):
-    country_mx_format = "%(street)s\n%(street2)s\n%(city)s %(state_code)s %(zip)s\n%(country_name)s" # noqa
+    country_mx_format = "%(street)s\n%(street2)s\n%(city)s %(state_code)s %(zip)s\n%(country_name)s"  # noqa
     cr.execute(
         """UPDATE res_country
         SET address_format=%s
@@ -557,7 +557,7 @@ def set_client_order_ref(cr):
     env = api.Environment(cr, SUPERUSER_ID, {})
     sale_ids = env["sale.order"].search([
         ("client_order_ref", "=", False)
-        ])
+    ])
     sale_ids.write({"client_order_ref": "  "})
     env.user.company_id.write(
         {'chart_template_id': env.ref('requiez.mx_coa').id})
@@ -581,8 +581,6 @@ def pre_init_hook(cr):
     remove_country_format(cr)
     update_res_partner_bank_index(cr)
     _logger.info('Importing Chart')
-    tools.convert_file(
-        cr, 'requiez',
-        'data/chart_template.xml', {}, 'init',
-        True, 'data', False)
+    tools.convert_file(cr, 'requiez', 'data/chart_template.xml', {}, 'init', True, 'data', False)
+    # convert_file(cr, module, filename, idref, mode='update', noupdate=False, kind=None, pathname=None):
     set_client_order_ref(cr)

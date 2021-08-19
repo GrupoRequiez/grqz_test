@@ -3,7 +3,8 @@
 
   <record model="res.groups" id="account_invoice_cancel">
     <field name="name">Invoice Cancel</field>
-    <field name="category_id" ref="base.module_category_accounting_and_finance"/>
+    <field name="category_id" ref="base.module_category_accounting_accounting"/>
+    <!-- <field name="category_id" ref="base.module_category_accounting_and_finance"/> -->
   </record>
 
 </odoo>

@@ -8,7 +8,7 @@
     'author': "Humanytek",
     'website': "http://www.humanytek.com",
     'category': 'Sale',
-    'version': '12.0.1.0.0',
+    'version': '1.0.0',
     'depends': [
         'mrp_sale_info'
     ],

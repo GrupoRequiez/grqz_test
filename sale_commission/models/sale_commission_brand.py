@@ -6,6 +6,7 @@ from odoo import fields, models
 class SaleCommissionBrand(models.Model):
     _name = "sale.commission.brand"
     _rec_name = "user_id"
+    _description = 'sale.commission.brand'
 
     user_id = fields.Many2one('res.users', 'Salesman', required=True,
                               help="Salesman")

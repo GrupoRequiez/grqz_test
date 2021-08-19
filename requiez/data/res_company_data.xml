@@ -19,7 +19,8 @@
         <field name="logo" type="base64" file="requiez/static/src/img/company_logo.jpg"/>
         <field name="report_header">DISEÑO · CONFORT · CALIDAD · INNOVACION</field>
         <field name="vat">GRE851219528</field>
-        <field name="external_report_layout">standard</field>
+        <field name="country_id" eval="ref('base.mx')"/>
+        <!-- <field name="external_report_layout_id">standard</field> -->
         <field name="chart_template_id" eval="ref('requiez.mx_coa')"/>
     </record>
     <record id="report_partner" model="res.partner">

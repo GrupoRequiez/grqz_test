@@ -19,7 +19,6 @@ class StockPicking(models.Model):
     account_moves = fields.One2many('account.move', 'stock_move_id',
                                     'Jornal Entry', compute='_compute_get_account_moves')
 
-    @api.multi
     def _compute_get_account_moves(self):
         account_move_ids = []
         for move in self.stock_move_ids:
@@ -28,7 +27,6 @@ class StockPicking(models.Model):
             [('stock_move_id', 'in', account_move_ids)])
         self.account_moves = related_recordset
 
-    @api.multi
     def _add_delivery_cost_to_so(self):
         """Creates the delivery line within the sale order only when the
         carrier price is different from zero."""

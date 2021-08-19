@@ -1,7 +1,7 @@
 # Copyright 2017 Humanytek.
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
-from odoo import fields, models
+from odoo import fields, models, api
 
 
 class SaleOrderLine(models.Model):
@@ -40,15 +40,18 @@ class SaleOrderLine(models.Model):
             ('product_id', 'in', self.mapped('product_id.id')),
             ('order_id', 'in', self.mapped('order_id.id'))],
             order='product_id')
-        assigned_mrp_ids = []
-        for line in lines:
-            line.mrp_id = mrp.search([
-                ('id', 'not in', assigned_mrp_ids),
-                ('sale_id', '=', line.order_id.id),
-                ('product_id', '=', line.product_id.id),
-                ('state', '!=', 'cancel'),
-                ('product_qty', '=', line.product_uom_qty)],
-                order='id', limit=1)
-            # Ignores current MRP order in case multiple lines has the
-            # same product quantity for the same product into the same SO
-            assigned_mrp_ids.append(line.mrp_id.id)
+        if lines:
+            assigned_mrp_ids = []
+            for line in lines:
+                line.mrp_id = mrp.search([
+                    ('id', 'not in', assigned_mrp_ids),
+                    ('sale_id', '=', line.order_id.id),
+                    ('product_id', '=', line.product_id.id),
+                    ('state', '!=', 'cancel'),
+                    ('product_qty', '=', line.product_uom_qty)],
+                    order='id', limit=1)
+                # Ignores current MRP order in case multiple lines has the
+                # same product quantity for the same product into the same SO
+                assigned_mrp_ids.append(line.mrp_id.id)
+        else:
+            self.mrp_id = False

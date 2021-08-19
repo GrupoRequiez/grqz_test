@@ -29,29 +29,30 @@ _logger = logging.getLogger(__name__)
 
 class ProductSupply(models.TransientModel):
     _name = "product.supply"
+    _description = 'product.supply'
 
-    @api.multi
+    # @api.multi
     def confirm(self):
         dict_moves = defaultdict(lambda: defaultdict(dict))
         moves = self.env['stock.move'].browse(self._context.get('active_ids'))
+
         for move in moves:
             brand = move.product_id.product_brand_id.name or 'NA'
             # pylint: disable=W0640
-            for line in move.mapped('move_line_ids').filtered(
-                lambda m: m.product_id.id == move.product_id.id and
-                    m.product_qty > 0):
+            for line in move.mapped('move_line_ids').filtered(lambda m: m.product_id.id == move.product_id.id and m.product_qty > 0):
                 dict_moves[brand][line.product_id.default_code].update({
                     str(line.lot_id.id if line.lot_id else 0): {
-                        'qty': sum([l.product_qty for m in moves.mapped(
-                            'move_line_ids') for l in m.filtered(
-                                lambda a: a.product_id.id == line.product_id.id
-                                and a.lot_id.id == line.lot_id.id)])
+                        'qty': sum([l.product_qty for m in moves.mapped('move_line_ids')
+                                    for l in m.filtered(lambda a: a.product_id.id == line.product_id.id and a.lot_id.id == line.lot_id.id)])
+
                         if line.lot_id else sum([
                             m.product_qty for m in moves.mapped(
                                 'move_line_ids') for l in m.filtered(
                                     lambda a: a.product_id.id ==
                                     line.product_id.id and not line.lot_id)]),
-                        'move': line.id}})
+                        'move': line.id,
+                        'locations': [(l.location_id.name, l.product_qty) for m in moves.mapped('move_line_ids') for l in m.filtered(lambda a: a.product_id.id == line.product_id.id and a.lot_id.id == line.lot_id.id)]
+                    }})
         extra_data = dict()
         extra_data['ids'] = [value.id for value in moves]
         extra_data['moves'] = dict_moves

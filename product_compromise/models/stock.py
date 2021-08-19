@@ -76,10 +76,10 @@ class StockMove(models.Model):
 
     def _compute_dis_product(self):
         for move in self:
-            move.dis_product_in = move.product_incoming_qty - move.total_compromise_product # noqa
-            move.dis_product = move.product_qty_product - move.total_reserved_product # noqa
+            move.dis_product_in = move.product_incoming_qty - move.total_compromise_product  # noqa
+            move.dis_product = move.product_qty_product - move.total_reserved_product  # noqa
 
-    @api.multi
+    # @api.multi
     def _compute_qty_product(self):
         stock_location_obj = self.env['stock.location']
         stock_location = stock_location_obj.search(
@@ -94,8 +94,10 @@ class StockMove(models.Model):
                 ['product_id', 'quantity'], ['product_id'])
             if quant_data:
                 move.product_qty_product = quant_data[0].get('quantity', 0.0)
+            else:
+                move.product_qty_product = 0.0
 
-    @api.multi
+    # @api.multi
     def action_compromise(self):
         return {
             'type': 'ir.actions.act_window',
@@ -108,9 +110,9 @@ class StockMove(models.Model):
                         'location_id': self.location_id.id},
             'views': [(False, 'form')],
             'target': 'new',
-            }
+        }
 
-    @api.multi
+    # @api.multi
     def action_liberate(self):
         lista = []
         for product_compromise in self.product_compromise_ids:
@@ -126,7 +128,7 @@ class StockMove(models.Model):
                         'lista': lista},
             'views': [(False, 'form')],
             'target': 'new',
-            }
+        }
 
     def _action_cancel(self):
         if super(StockMove, self)._action_cancel():
@@ -136,7 +138,7 @@ class StockMove(models.Model):
             product_compromises.unlink()
         return True
 
-    def _action_done(self):
+    def _action_done(self, cancel_backorder=False):
         if super(StockMove, self)._action_done():
             for moves in self:
                 product_compromises = self.env['product.compromise'].search(
@@ -148,15 +150,18 @@ class StockMove(models.Model):
                          compromise in move.product_compromise_ids if
                          compromise.state == 'done' and
                          compromise.stock_move_in_id ==
-                         product_compromise.stock_move_in_id]) or 0.0
+                         product_compromise.stock_move_in_id])  # or 0.0
                     if move.reserved_availability < move.product_uom_qty:
                         move._update_reserved_quantity(
                             compromise_qty, compromise_qty,
                             move.location_id, strict=False)
         return True
 
-    @api.multi
+    # @api.multi
     def action_reserve(self):
+        txt = "compromise:%s move_out:%s qty:%s" % (
+            self.compromise_qty, self.id, self.product_uom_qty)
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", txt)
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'reserve',
@@ -167,9 +172,9 @@ class StockMove(models.Model):
                         'qty': self.product_uom_qty},
             'views': [(False, 'form')],
             'target': 'new',
-            }
+        }
 
-    @api.multi
+    # @api.multi
     def action_assign_qty(self, need, available_quantity, qty_compromise):
         moves_to_assign = self.env['stock.move']
         moves = self.filtered(

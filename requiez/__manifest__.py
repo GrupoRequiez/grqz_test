@@ -104,14 +104,15 @@
         "report/report_invoice.xml",
         "report/purchase_order_templates.xml",
         "report/purchase_quotation_templates.xml",
-        "report/mrp_mps_report_templates.xml",
     ],
     "demo": [
     ],
     "test": [
     ],
-    "qweb": [],
-    "pre_init_hook": "pre_init_hook",
+    "qweb": [
+        "static/src/xml/qweb_teplates.xml",
+    ],
+    # "pre_init_hook": "pre_init_hook",
     "auto_install": False,
     "application": True,
     "installable": True,

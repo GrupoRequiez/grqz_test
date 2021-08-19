@@ -29,12 +29,14 @@ _logger = logging.getLogger(__name__)
 
 class ProductSupply(models.AbstractModel):
     _name = 'report.product_supply.report_product_supply'
+    _description = 'report.product_supply.report_product_supply'
 
     @api.model
     def _get_report_values(self, docids, data=None):
         docids = data['extra_data']['ids']
         model_stock_move = self.env['stock.move']
         docs = model_stock_move.browse(docids)
+        print(">>>", model_stock_move)
         data['extra_data']['moves'] = {b: OrderedDict(
             sorted(v.items(), key=lambda x: x[0])) for b, v in data[
                 'extra_data']['moves'].items()}

@@ -62,7 +62,7 @@ msgstr "<span>Fecha de factura</span>"
 
 #. module: sale_commission
 #: model_terms:ir.ui.view,arch_db:sale_commission.sale_commission_report_document
-msgid "<span>Number</span>"
+msgid "<span>Name</span>"
 msgstr "<span>Número</span>"
 
 #. module: sale_commission
@@ -351,7 +351,7 @@ msgstr "Apunte donde se registró el pago"
 
 #. module: sale_commission
 #: model:ir.model.fields,field_description:sale_commission.field_sale_commission_detail__account_invoice_number
-msgid "Number"
+msgid "Name"
 msgstr "Número"
 
 #. module: sale_commission

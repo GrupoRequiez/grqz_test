@@ -1,4 +1,4 @@
-from odoo import _, models, api
+from odoo import _, models
 from odoo.tools.misc import formatLang, format_date
 from odoo.exceptions import UserError
 
@@ -6,7 +6,6 @@ from odoo.exceptions import UserError
 class AccountPayment(models.Model):
     _inherit = "account.payment"
 
-    @api.multi
     def do_print_checks(self):
         mx_check_layout = self[0].journal_id.mx_check_layout
         if mx_check_layout != 'disabled':

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <record model="res.groups" id="product_relocation_group">
+    <field name="name">Product relocation</field>
+    <field name="category_id">156</field>
+  </record>
+</odoo>

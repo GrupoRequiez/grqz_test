@@ -3,40 +3,41 @@
 
   <record id="invoice_supplier_payment_date_form" model="ir.ui.view">
     <field name="name">invoice.supplier.payment.date.form</field>
-    <field name="model">account.invoice</field>
-    <field name="inherit_id" ref="account.invoice_supplier_form"/>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//field[@name='date_due']" position="after">
-        <field name="date_payment"/>
+      <xpath expr="//field[@name='invoice_date']" position="after">
+        <field name="date_payment" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
       </xpath>
     </field>
   </record>
 
   <record id="invoice_supplier_payment_date_tree" model="ir.ui.view">
     <field name="name">invoice.supplier.payment.date.tree</field>
-    <field name="model">account.invoice</field>
-    <field name="inherit_id" ref="account.invoice_supplier_tree"/>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_in_invoice_tree"/>
     <field name="arch" type="xml">
       <xpath expr="//field[@name='state']" position="before">
-        <field name="date_payment"/>
+        <field name="move_type" invisible="True"/>
+        <field name="date_payment" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
       </xpath>
     </field>
   </record>
 
   <record id="invoice_supplier_prioritized_form" model="ir.ui.view">
     <field name="name">invoice.supplier.prioritized.form</field>
-    <field name="model">account.invoice</field>
-    <field name="inherit_id" ref="account.invoice_supplier_form"/>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
     <field name="arch" type="xml">
-      <xpath expr="//field[@name='date']" position="after">
-        <field name="prioritized"/>
+      <xpath expr="//div[@name='journal_div']" position="after">
+        <field name="prioritized" attrs="{'invisible': [('move_type', '!=', 'in_invoice')]}"/>
       </xpath>
     </field>
   </record>
 
   <record id="invoice_supplier_group_prioritized_form" model="ir.ui.view">
     <field name="name">invoice.group.supplier.prioritized.form</field>
-    <field name="model">account.invoice</field>
+    <field name="model">account.move</field>
     <field name="inherit_id" ref="invoice_supplier_prioritized_form"/>
     <field name="groups_id" eval="[(6, 0, [ref('requiez.group_prioritize') ])]"/>
     <field name="arch" type="xml">
@@ -49,22 +50,22 @@
   <!-- Start permission to cancel the invoice -->
   <record id="account_invoice_cancel_view_form_inheritmgr" model="ir.ui.view">
     <field name="name">account.invoice.cancel.view.form.inherit</field>
-    <field name="model">account.invoice</field>
-    <field name="inherit_id" ref="account_cancel.invoice_form_cancel_inherit"/>
+    <field name="model">account.move</field>
+    <field name="inherit_id" ref="account.view_move_form"/>
     <field name="groups_id" eval="[(6, 0, [ref('base.group_user') ])]"/>
     <field name="arch" type="xml">
-      <xpath expr="//button[@name='action_invoice_cancel']" position="attributes">
+      <xpath expr="//button[@name='button_cancel']" position="attributes">
         <attribute name="invisible">1</attribute>
       </xpath>
     </field>
   </record>
   <record id="account_invoice_cancel_view_form" model="ir.ui.view">
     <field name="name">account.invoice.cancel.view.form</field>
-    <field name="model">account.invoice</field>
+    <field name="model">account.move</field>
     <field name="inherit_id" ref="requiez.account_invoice_cancel_view_form_inheritmgr"/>
     <field name="groups_id" eval="[(6, 0, [ref('requiez.account_invoice_cancel') ])]"/>
     <field name="arch" type="xml">
-      <xpath expr="//button[@name='action_invoice_cancel']" position="attributes">
+      <xpath expr="//button[@name='button_cancel']" position="attributes">
         <attribute name="invisible">0</attribute>
       </xpath>
     </field>

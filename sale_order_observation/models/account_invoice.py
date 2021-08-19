@@ -6,6 +6,6 @@ from odoo import models
 _logger = logging.getLogger(__name__)
 
 
-class AccountInvoiceLine(models.Model):
-    _name = "account.invoice.line"
-    _inherit = ['account.invoice.line', 'sale.order.observation']
+class AccountMoveLine(models.Model):
+    _name = "account.move.line"
+    _inherit = ['account.move.line', 'sale.order.observation']

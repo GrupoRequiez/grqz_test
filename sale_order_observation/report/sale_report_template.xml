@@ -4,9 +4,9 @@
         <xpath expr="//table[@class='table table-sm o_main_table']/thead/tr" position="inside">
             <th>Observation</th>
         </xpath>
-        <xpath expr="//table[@class='table table-sm o_main_table']/tbody/t/t[@t-if]" position="inside">
+        <xpath expr="//table[@class='table table-sm o_main_table']/tbody/t/tr//t[@t-if]" position="inside">
             <td class="text-right">
-                <span t-field="l.observation"/>
+                <span t-field="line.observation"/>
             </td>
         </xpath>
     </template>
